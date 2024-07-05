@@ -27,7 +27,7 @@ export class MessagesResolver {
   async getMessages(
     @Args() getMessageArgs: GetMessagesArgs,
   ): Promise<Message[]> {
-    return this.messagesService.getMessages(getMessageArgs);
+    return await this.messagesService.getMessages(getMessageArgs);
   }
 
   @Subscription(() => Message, {
@@ -40,6 +40,7 @@ export class MessagesResolver {
       );
     },
   })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   messageCreated(@Args() _messageCreatedArgs: MessageCreatedArgs) {
     return this.messagesService.messageCreated();
   }

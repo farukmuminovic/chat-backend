@@ -13,7 +13,6 @@ import { ChatsModule } from './chats/chats.module';
 import { PubSubModule } from './common/pubsub/pubsub.module';
 import { AuthService } from './auth/auth.service';
 import { Request } from 'express';
-import { S3Module } from './common/s3/s3.module';
 
 @Module({
   imports: [
@@ -32,7 +31,10 @@ import { S3Module } from './common/s3/s3.module';
             onConnect: (context: any) => {
               try {
                 const request: Request = context.extra.request;
-                context.user = authService.verifyWs(request);
+                context.user = authService.verifyWs(
+                  request,
+                  context.connectionParams,
+                );
               } catch (err) {
                 new Logger().error(err);
                 throw new UnauthorizedException();
@@ -47,6 +49,8 @@ import { S3Module } from './common/s3/s3.module';
     DatabaseModule,
     UsersModule,
     LoggerModule.forRootAsync({
+      imports: undefined,
+      providers: undefined,
       useFactory: (configService: ConfigService) => {
         const isProduction = configService.get('NODE_ENV') === 'production';
         return {

@@ -10,7 +10,7 @@ export class S3Service {
   constructor(configService: ConfigService) {
     const accessKeyId = configService.get('AWS_ACCESS_KEY');
     const secretAccessKey = configService.get('AWS_SECRET_ACCESS_KEY');
-    const region = configService.get('AWS_REGION');
+    const region = 'eu-central-1';
 
     const clientConfig: S3ClientConfig = {
       region,
